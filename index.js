@@ -1,5 +1,6 @@
 // implement your API here
 const express = require("express");
+const cors = require("cors");
 const db = require("./data/db");
 
 const server = express();
@@ -75,7 +76,7 @@ server.delete("/api/users/:id", (req, res) => {
   db.remove(id)
     .then(users => {
       if (users) {
-        console.log("User deleted at ID #", users);
+        console.log("User deleted -- ", users);
         res.status(201).json(users);
       } else {
         console.log("DELETE error", err);
@@ -97,7 +98,7 @@ server.put("/api/users/:id", (req, res) => {
 
   db.update(id, users)
     .then(user => {
-      if (user, id) {
+      if ((user, id)) {
         console.log("User updated", user);
         res.status(200).json(user);
       } else if (id === []) {
