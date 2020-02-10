@@ -4,6 +4,7 @@ const db = require("./data/db");
 
 const server = express();
 server.use(express.json());
+server.use(cors());
 
 //POST
 server.post("/api/users", (req, res) => {
