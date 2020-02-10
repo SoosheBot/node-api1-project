@@ -95,11 +95,11 @@ server.put("/api/users/:id", (req, res) => {
   const users = { ...req.body };
 
   db.update(id, users)
-    .then(users => {
-      if (users) {
-        console.log("User updated", users);
-        res.status(200).json(users);
-      } else if (users.id === []) {
+    .then(user => {
+      if (user, id) {
+        console.log("User updated", user);
+        res.status(200).json(user);
+      } else if (id === []) {
         console.log("User id not available");
         res
           .status(404)
