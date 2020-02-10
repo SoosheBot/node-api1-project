@@ -16,12 +16,10 @@ server.post("/api/users", (req, res) => {
         res.status(201).json(user);
       } else {
         // console.log("POST error", err);
-        res
-          .status(500)
-          .json({
-            errorMessage:
-              "There was an error while saving the user to the database"
-          });
+        res.status(500).json({
+          errorMessage:
+            "There was an error while saving the user to the database"
+        });
       }
     })
     .catch(err => {
@@ -41,11 +39,9 @@ server.get("/api/users", (req, res) => {
     })
     .catch(err => {
       console.log("GET error", err);
-      res
-        .status(500)
-        .json({
-          errorMessage: "The users information could not be retrieved."
-        });
+      res.status(500).json({
+        errorMessage: "The users information could not be retrieved."
+      });
     });
 });
 
@@ -59,11 +55,9 @@ server.get("/api/users/:id", (req, res) => {
         res.status(201).json(users);
       } else {
         console.log("GET error", err);
-        res
-          .status(500)
-          .json({
-            errorMessage: "The user's information could not be retrieved."
-          });
+        res.status(500).json({
+          errorMessage: "The user's information could not be retrieved."
+        });
       }
     })
     .catch(err => {
@@ -71,6 +65,27 @@ server.get("/api/users/:id", (req, res) => {
       res
         .status(404)
         .json({ message: "The user with the specified ID does not exist." });
+    });
+});
+
+//DELETE
+server.delete("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+  db.remove(id)
+    .then(users => {
+      if (users) {
+        console.log("User deleted at ID #", users);
+        res.status(201).json(users);
+      } else {
+        console.log("DELETE error", err);
+        res.status(500).json({
+          errorMessage: "The user's information could not be removed."
+        });
+      }
+    })
+    .catch(err => {
+      console.log("DELETE err", err);
+      res.status(500).json({ errorMessage: "The user could not be removed" });
     });
 });
 
