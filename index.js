@@ -12,7 +12,7 @@ server.post("/api/users", (req, res) => {
   db.insert(users)
     .then(user => {
       if (user) {
-        // console.log("POST success! User is", user);
+        console.log("POST success! User is", user);
         res.status(201).json(user);
       } else {
         // console.log("POST error", err);
@@ -86,6 +86,36 @@ server.delete("/api/users/:id", (req, res) => {
     .catch(err => {
       console.log("DELETE err", err);
       res.status(500).json({ errorMessage: "The user could not be removed" });
+    });
+});
+
+// PUT
+server.put("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+  const users = { ...req.body };
+
+  db.update(id, users)
+    .then(users => {
+      if (users) {
+        console.log("User updated", users);
+        res.status(200).json(users);
+      } else if (users.id === []) {
+        console.log("User id not available");
+        res
+          .status(404)
+          .json({ message: "The user with the specified ID does not exist." });
+      } else {
+        console.log("Missing info");
+        res
+          .status(400)
+          .json({ errorMessage: "Please provide name and bio for the user." });
+      }
+    })
+    .catch(err => {
+      console.log("PUT error--id does not exist", err);
+      res
+        .status(500)
+        .json({ errorMessage: "The user information could not be modified." });
     });
 });
 
