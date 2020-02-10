@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
-import DeleteUser from './DeleteUser';
+import DeleteUser from "./DeleteUser";
 
 const UserList = () => {
   const [usersList, setUsersList] = useState();
@@ -20,7 +20,6 @@ const UserList = () => {
 
   return (
     <div className="user-list" user-id="user-list">
-      <h1>Users</h1>
       {usersList &&
         usersList.map(userlist => {
           return (

@@ -1,17 +1,16 @@
 import React from "react";
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { axiosWithAuth } from "../utils/axiosWithAuth";
 
-
-const  DeleteUser = (props) => {
-  const handleDelete = (e) => {
+const DeleteUser = props => {
+  const handleDelete = e => {
     e.preventDefault();
     axiosWithAuth()
       .delete(`/api/users/${props.userlist.id}`)
       .then(res => {
-        console.log('delete success', res);
-        window.location.reload(false); 
+        console.log("Delete success", res);
+        window.location.reload(false);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log('Could not delete user', err));
   };
 
   return (
@@ -21,6 +20,6 @@ const  DeleteUser = (props) => {
       </button>
     </div>
   );
-}
+};
 
 export default DeleteUser;
