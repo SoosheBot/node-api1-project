@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 import DeleteUser from "./DeleteUser";
+import EditUser from "./EditUser";
 
 const UserList = () => {
   const [usersList, setUsersList] = useState();
@@ -27,6 +28,7 @@ const UserList = () => {
               <h2>Name: {userlist.name}</h2>
               <h2>Bio: {userlist.bio}</h2>
               <DeleteUser userlist={userlist} />
+              <EditUser userlist={userlist} />
             </div>
           );
         })}
