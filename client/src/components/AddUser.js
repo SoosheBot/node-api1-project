@@ -17,12 +17,13 @@ const AddUser = () => {
     axiosWithAuth()
       .post("/api/users", addUser)
       .then(res => {
-        console.log("Add user success", res.data);
+        console.log("add success", res);
         setAddUser({
           ...addUser,
           name: "",
           bio: ""
         });
+        window.location.reload(false);
       })
       .catch(err => console.log("Could not add user", err));
   };

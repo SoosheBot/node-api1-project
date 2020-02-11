@@ -10,25 +10,25 @@ server.use(cors());
 //POST
 server.post("/api/users", (req, res) => {
   const users = { ...req.body };
-
-  db.insert(users)
-    .then(user => {
-      if (!user.name || !user.bio) {
-        console.log("POST error--missing user name or bio", err);
-        res
-          .status(400)
-          .json({ errorMessage: "Please provide name and bio for the user." });
-      } else {
-        console.log("POST success! User is", user);
+  if (!users.name || !users.bio) {
+    console.log("POST error--missing user name or bio");
+    res
+      .status(400)
+      .json({ errorMessage: "Please provide name and bio for the user." });
+  } else {
+    db.insert(users)
+      .then(user => {
+        console.log("POST success! User =", user);
         res.status(201).json(user);
-      }
-    })
-    .catch(err => {
-      // console.log("POST error", err);
-      res.status(500).json({
-        errorMessage: "There was an error while saving the user to the database"
+      })
+      .catch(err => {
+        console.log("POST error", err);
+        res.status(500).json({
+          errorMessage:
+            "There was an error while saving the user to the database"
+        });
       });
-    });
+  }
 });
 
 //GET
@@ -112,11 +112,9 @@ server.put("/api/users/:id", (req, res) => {
         if (user) {
           res.status(200).json(user);
         } else {
-          res
-            .status(404)
-            .json({
-              message: "The user with the specified ID does not exist."
-            });
+          res.status(404).json({
+            message: "The user with the specified ID does not exist."
+          });
         }
       })
       .catch(err => {

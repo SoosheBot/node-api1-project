@@ -15,8 +15,8 @@ const DeleteUser = props => {
 
   return (
     <div className="edit-article-wrapper">
-      <button className="md-button" onClick={handleDelete}>
-        Delete User
+      <button className="delete-button" onClick={handleDelete}>
+        Delete
       </button>
     </div>
   );
