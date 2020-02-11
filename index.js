@@ -13,22 +13,21 @@ server.post("/api/users", (req, res) => {
 
   db.insert(users)
     .then(user => {
-      if (user) {
+      if (!user.name || !user.bio) {
+        console.log("POST error--missing user name or bio", err);
+        res
+          .status(400)
+          .json({ errorMessage: "Please provide name and bio for the user." });
+      } else {
         console.log("POST success! User is", user);
         res.status(201).json(user);
-      } else {
-        // console.log("POST error", err);
-        res.status(500).json({
-          errorMessage:
-            "There was an error while saving the user to the database"
-        });
       }
     })
     .catch(err => {
-      console.log("POST error--missing user name or bio", err);
-      res
-        .status(400)
-        .json({ errorMessage: "Please provide name and bio for the user." });
+      // console.log("POST error", err);
+      res.status(500).json({
+        errorMessage: "There was an error while saving the user to the database"
+      });
     });
 });
 
@@ -36,8 +35,13 @@ server.post("/api/users", (req, res) => {
 server.get("/api/users", (req, res) => {
   db.find()
     .then(users => {
-      console.log("GET success! Users found", users);
-      res.status(201).json(users);
+      if (!users) {
+        console.log("no users");
+        res.status(404).json({ message: "No users found" });
+      } else {
+        console.log("GET success! Users found", users);
+        res.status(201).json(users);
+      }
     })
     .catch(err => {
       console.log("GET error", err);
@@ -75,14 +79,16 @@ server.delete("/api/users/:id", (req, res) => {
   const { id } = req.params;
   db.remove(id)
     .then(users => {
-      if (users) {
-        console.log("User deleted -- ", users);
-        res.status(201).json(users);
+      if (!users) {
+        res.status(404).json({ message: "ID does not exist" });
+        // } else if () {
+        //   console.log("DELETE error");
+        //   res.status(500).json({
+        //     errorMessage: "The user's information could not be removed."
+        //   })
       } else {
-        console.log("DELETE error", err);
-        res.status(500).json({
-          errorMessage: "The user's information could not be removed."
-        });
+        console.log(`User ID #${id} has been removed`);
+        res.status(201).json(users);
       }
     })
     .catch(err => {
@@ -98,19 +104,19 @@ server.put("/api/users/:id", (req, res) => {
 
   db.update(id, users)
     .then(user => {
-      if ((user, id)) {
-        console.log("User updated", user);
-        res.status(200).json(user);
+      if (!user.name || !user.bio) {
+        console.log("Missing info");
+        res
+          .status(400)
+          .json({ errorMessage: "Please provide name and bio for the user." });
       } else if (id === []) {
         console.log("User id not available");
         res
           .status(404)
           .json({ message: "The user with the specified ID does not exist." });
       } else {
-        console.log("Missing info");
-        res
-          .status(400)
-          .json({ errorMessage: "Please provide name and bio for the user." });
+        console.log("User updated", user);
+        res.status(200).json(user);
       }
     })
     .catch(err => {
