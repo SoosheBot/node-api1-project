@@ -104,18 +104,18 @@ server.put("/api/users/:id", (req, res) => {
 
   db.update(id, users)
     .then(user => {
-      if (!user.name || !user.bio) {
-        console.log("Missing info");
-        res
-          .status(400)
-          .json({ errorMessage: "Please provide name and bio for the user." });
-      } else if (id === []) {
-        console.log("User id not available");
+      if (!user) {
+        // console.log("User id not available/does not exist");
         res
           .status(404)
           .json({ message: "The user with the specified ID does not exist." });
+      } else if (!user.name || !user.bio) {
+        // console.log("Missing info");
+        res
+          .status(400)
+          .json({ errorMessage: "Please provide name and bio for the user." });
       } else {
-        console.log("User updated", user);
+        // console.log("User updated", user);
         res.status(200).json(user);
       }
     })
