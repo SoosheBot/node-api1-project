@@ -102,29 +102,29 @@ server.put("/api/users/:id", (req, res) => {
   const { id } = req.params;
   const users = { ...req.body };
 
-  db.update(id, users)
-    .then(user => {
-      if (!user) {
-        // console.log("User id not available/does not exist");
+  if (!users.name || !users.bio) {
+    res
+      .status(400)
+      .json({ errorMessage: "Please provide name and bio for the user." });
+  } else {
+    db.update(id, users)
+      .then(user => {
+        if (user) {
+          res.status(200).json(user);
+        } else {
+          res
+            .status(404)
+            .json({
+              message: "The user with the specified ID does not exist."
+            });
+        }
+      })
+      .catch(err => {
         res
-          .status(404)
-          .json({ message: "The user with the specified ID does not exist." });
-      } else if (!user.name || !user.bio) {
-        // console.log("Missing info");
-        res
-          .status(400)
-          .json({ errorMessage: "Please provide name and bio for the user." });
-      } else {
-        // console.log("User updated", user);
-        res.status(200).json(user);
-      }
-    })
-    .catch(err => {
-      console.log("PUT error--id does not exist", err);
-      res
-        .status(500)
-        .json({ errorMessage: "The user information could not be modified." });
-    });
+          .status(500)
+          .json({ error: "The user information could not be modified." });
+      });
+  }
 });
 
 const port = 5000;

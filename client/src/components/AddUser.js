@@ -28,7 +28,7 @@ const AddUser = () => {
   };
 
   return (
-    <div className="add-user-form">
+    <div className="add-user-form" data-testid='add-user-form'>
       <form onSubmit={submitForm}>
         <input
           type="text"
