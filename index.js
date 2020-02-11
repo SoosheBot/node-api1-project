@@ -56,21 +56,21 @@ server.get("/api/users/:id", (req, res) => {
   const { id } = req.params;
   db.findById(id)
     .then(users => {
-      if (users) {
+      if (users.id) {
         console.log("GET by id success! User found", users);
         res.status(201).json(users);
       } else {
-        console.log("GET error", err);
-        res.status(500).json({
-          errorMessage: "The user's information could not be retrieved."
-        });
+        console.log("GET by ID error", err);
+        res
+          .status(404)
+          .json({ message: "The user with the specified ID does not exist." });
       }
     })
     .catch(err => {
-      console.log("GET by ID error", err);
-      res
-        .status(404)
-        .json({ message: "The user with the specified ID does not exist." });
+      console.log("GET error", err);
+      res.status(500).json({
+        errorMessage: "The user's information could not be retrieved."
+      });
     });
 });
 
